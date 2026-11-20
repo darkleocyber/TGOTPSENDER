@@ -1,20 +1,13 @@
-import TgOtpsent
-import inspect
+import importlib.util
+import sys
 
-print("Module loaded:", TgOtpsent.__name__)
+# ফাইলের সঠিক পাথ দিন (Termux-এ আপনার প্রজেক্ট ফোল্ডারের পাথ অনুযায়ী পরিবর্তন করুন)
+file_path = "/data/data/com.termux/files/home/TGOTPSENDER/TGOTPSENDER/TgOtpsent.cpython-311.pyc" # এখানে আপনার ফাইলের নাম দিন
 
-if hasattr(TgOtpsent, "auto_run"):
-    try:
-        print("Auto_run arguments:", inspect.signature(TgOtpsent.auto_run))
-    except (ValueError, TypeError):
-        print("Signature not available.")
-elif hasattr(TgOtpsent, "main"):
-    try:
-        print("Main arguments:", inspect.signature(TgOtpsent.main))
-    except (ValueError, TypeError):
-        print("Main signature not available.")
-else:
-    print("No auto_run or main function found.")
+spec = importlib.util.spec_from_file_location("TgOtpsent", file_path)
+TgOtpsent = importlib.util.module_from_spec(spec)
+sys.modules["TgOtpsent"] = TgOtpsent
+spec.loader.exec_module(TgOtpsent)
 
-print("Available functions:")
+# এখন চেক করুন TgOtpsent-এ কী কী ফাংশন আছে
 print([name for name in dir(TgOtpsent) if not name.startswith("_")])
